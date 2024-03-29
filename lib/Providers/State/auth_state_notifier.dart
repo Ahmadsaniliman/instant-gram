@@ -8,7 +8,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
 
   AuthStateNotifier() : super(const AuthState.unKnown()) {
     if (_authenticator.isAlreadyLoggedIn) {
-      AuthState(
+      state = AuthState(
         result: AuthResults.success,
         isLoading: false,
         userId: _authenticator.userId,
@@ -17,13 +17,14 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     Future<void> logOut() async {
       state = state.copiedWith(true);
       await _authenticator.logOut();
-      const AuthState.unKnown();
+      state = const AuthState.unKnown();
     }
 
     Future<void> logInWithGoogle() async {
       state = state.copiedWith(true);
       final result = await _authenticator.signInWithGoogle();
-      final userId = await _authenticator.userId;
+      final userId = _authenticator.userId;
+
       if (result == AuthResults.success && userId != null) {}
     }
   }

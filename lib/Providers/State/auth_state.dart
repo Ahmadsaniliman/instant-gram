@@ -5,7 +5,7 @@ import 'package:instantgram/Models/auth_result.dart';
 @immutable
 class AuthState {
   final AuthResults? result;
-  final bool? isLoading;
+  final bool isLoading;
   final UserId? userId;
 
   const AuthState({

@@ -8,6 +8,7 @@ import 'package:instantgram/Models/auth_result.dart';
 @immutable
 class Authenticator {
   const Authenticator();
+
   UserId? get userId => FirebaseAuth.instance.currentUser!.uid;
   bool get isAlreadyLoggedIn => userId != null;
   String get displaName => FirebaseAuth.instance.currentUser!.displayName ?? '';
@@ -26,21 +27,18 @@ class Authenticator {
     );
 
     final accountSignIn = await googleSignIn.signIn();
-
     if (accountSignIn == null) {
       return AuthResults.aborted;
     }
 
-    final authSignIn = await accountSignIn.authentication;
-    final authCredentials = GoogleAuthProvider.credential(
-      idToken: authSignIn.idToken,
-      accessToken: authSignIn.accessToken,
+    final googleAuth = await accountSignIn.authentication;
+    final authCredentilas = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+      accessToken: googleAuth.accessToken,
     );
 
     try {
-      await FirebaseAuth.instance.signInWithCredential(
-        authCredentials,
-      );
+      await FirebaseAuth.instance.signInWithCredential(authCredentilas);
       return AuthResults.success;
     } catch (e) {
       return AuthResults.failure;
