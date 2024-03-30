@@ -9,4 +9,5 @@ class FirebaseFieldNames {
   static const date = 'date';
   static const displayName = 'display_name';
   static const email = 'email';
+  static const users = 'users';
 }
