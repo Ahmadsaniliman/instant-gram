@@ -4,38 +4,38 @@ import 'package:instantgram/Models/auth_result.dart';
 
 @immutable
 class AuthState {
-  final AuthResults? result;
-  final bool isLoading;
   final UserId? userId;
+  final AuthResults? results;
+  final bool? isLoading;
 
   const AuthState({
-    required this.result,
-    required this.isLoading,
     required this.userId,
+    required this.results,
+    required this.isLoading,
   });
 
   const AuthState.unKnown()
-      : result = null,
-        isLoading = false,
-        userId = null;
+      : results = null,
+        userId = null,
+        isLoading = false;
 
   AuthState copiedWith(bool isLoading) => AuthState(
-        result: result,
-        isLoading: isLoading,
         userId: userId,
+        results: results,
+        isLoading: isLoading,
       );
 
   @override
   bool operator ==(covariant AuthState other) =>
       identical(this, other) ||
-      (result == other.result &&
+      (results == other.results &&
           isLoading == other.isLoading &&
           userId == other.userId);
 
   @override
   int get hashCode => Object.hash(
-        result,
-        isLoading,
+        results,
         userId,
+        isLoading,
       );
 }

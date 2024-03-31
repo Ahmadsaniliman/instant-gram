@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:instantgram/Constants/Posts/collection_names.dart';
@@ -8,12 +6,12 @@ import 'package:instantgram/Constants/Posts/user_id.dart';
 import 'package:instantgram/Constants/Posts/user_pay_load.dart';
 
 @immutable
-class SaveUserInfoStorage {
-  const SaveUserInfoStorage();
+class UserInfoStorage {
+  const UserInfoStorage();
 
-  Future<bool> saveInfo({
+  Future<bool> saveUserInfo({
     required UserId userId,
-    required String? displayName,
+    required String displayName,
     required String? email,
   }) async {
     try {
@@ -27,10 +25,11 @@ class SaveUserInfoStorage {
           .get();
 
       if (userInfo.docs.isNotEmpty) {
-        await userInfo.docs.first.reference.update({
-          FirebaseFieldNames.email: email ?? '',
+        userInfo.docs.first.reference.update({
           FirebaseFieldNames.displayName: displayName,
+          FirebaseFieldNames.email: email ?? '',
         });
+
         return true;
       }
 
@@ -43,10 +42,9 @@ class SaveUserInfoStorage {
       await FirebaseFirestore.instance.collection(CollectionNames.users).add(
             payLoad,
           );
-
-      return true;
     } catch (e) {
       return false;
     }
+    return false;
   }
 }
