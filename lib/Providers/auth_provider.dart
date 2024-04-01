@@ -11,15 +11,16 @@ class Authenticator {
 
   UserId? get userId => FirebaseAuth.instance.currentUser!.uid;
   bool get isAlreadyLoggedIn => userId != null;
-  String get displaName => FirebaseAuth.instance.currentUser!.displayName ?? '';
+  String? get displayName =>
+      FirebaseAuth.instance.currentUser!.displayName ?? '';
   String? get email => FirebaseAuth.instance.currentUser!.email;
 
-  Future<void> logOut() async {
+  void signOut() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
   }
 
-  Future<AuthResults> signInWithGoogle() async {
+  Future<AuthResults> logInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: [
         Constants.emailScope,
@@ -32,13 +33,13 @@ class Authenticator {
     }
 
     final googleAuth = await accountSignIn.authentication;
-    final authCredentilas = GoogleAuthProvider.credential(
+    final authCredentials = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
       accessToken: googleAuth.accessToken,
     );
 
     try {
-      await FirebaseAuth.instance.signInWithCredential(authCredentilas);
+      await FirebaseAuth.instance.signInWithCredential(authCredentials);
       return AuthResults.success;
     } catch (e) {
       return AuthResults.failure;

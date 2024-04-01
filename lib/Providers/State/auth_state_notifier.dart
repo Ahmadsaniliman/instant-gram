@@ -12,35 +12,37 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
   AuthStateNotifier() : super(const AuthState.unKnown()) {
     if (_authenticator.isAlreadyLoggedIn) {
       state = AuthState(
+        result: AuthResults.success,
         userId: _authenticator.userId,
-        results: AuthResults.success,
         isLoading: false,
       );
     }
 
     Future<void> logOut() async {
       state = state.copiedWith(true);
-      await _authenticator.logOut();
+      _authenticator.signOut();
       state = const AuthState.unKnown();
     }
 
-    Future<void> userInfo({required UserId userId}) =>
-        _saveUserInfo.saveUserInfo(
-          userId: userId,
-          displayName: _authenticator.displaName,
-          email: _authenticator.email,
-        );
+    Future<void> saveUserInfo({required UserId userId}) async {
+      _saveUserInfo.saveUserInfo(
+        userId: userId,
+        displayName: _authenticator.displayName!,
+        email: _authenticator.email!,
+      );
+    }
 
-    Future<void> loginWithGoogle() async {
+    Future<void> logInWithGoogle() async {
       state = state.copiedWith(true);
-      final result = await _authenticator.signInWithGoogle();
+      final result = await _authenticator.logInWithGoogle();
       final userId = _authenticator.userId;
-
       if (result == AuthResults.success && userId != null) {
-        await userInfo(userId: userId);
-        AuthState(
+        await saveUserInfo(
           userId: userId,
-          results: result,
+        );
+        AuthState(
+          result: result,
+          userId: userId,
           isLoading: false,
         );
       }

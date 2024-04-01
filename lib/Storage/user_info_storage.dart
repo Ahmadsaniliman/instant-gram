@@ -12,7 +12,7 @@ class UserInfoStorage {
   Future<bool> saveUserInfo({
     required UserId userId,
     required String displayName,
-    required String? email,
+    required String email,
   }) async {
     try {
       final userInfo = await FirebaseFirestore.instance
@@ -25,11 +25,10 @@ class UserInfoStorage {
           .get();
 
       if (userInfo.docs.isNotEmpty) {
-        userInfo.docs.first.reference.update({
+        await userInfo.docs.first.reference.update({
           FirebaseFieldNames.displayName: displayName,
-          FirebaseFieldNames.email: email ?? '',
+          FirebaseFieldNames.email: email,
         });
-
         return true;
       }
 
@@ -38,7 +37,6 @@ class UserInfoStorage {
         displayName: displayName,
         email: email,
       );
-
       await FirebaseFirestore.instance.collection(CollectionNames.users).add(
             payLoad,
           );
