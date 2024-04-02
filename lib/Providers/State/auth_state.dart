@@ -5,13 +5,13 @@ import 'package:instantgram/Models/auth_result.dart';
 @immutable
 class AuthState {
   final AuthResults? result;
-  final UserId? userId;
   final bool isLoading;
+  final UserId? userId;
 
   const AuthState({
     required this.result,
-    required this.userId,
     required this.isLoading,
+    required this.userId,
   });
 
   const AuthState.unKnown()
@@ -19,10 +19,10 @@ class AuthState {
         isLoading = false,
         userId = null;
 
-  AuthState copiedWith(bool isLoading) => AuthState(
+  AuthState cpoiedWith(bool isLoading) => AuthState(
         result: result,
-        userId: userId,
         isLoading: isLoading,
+        userId: userId,
       );
 
   @override
@@ -34,8 +34,8 @@ class AuthState {
 
   @override
   int get hashCode => Object.hash(
+        result,
         isLoading,
         userId,
-        result,
       );
 }

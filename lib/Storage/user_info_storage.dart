@@ -6,39 +6,38 @@ import 'package:instantgram/Constants/Posts/user_id.dart';
 import 'package:instantgram/Constants/Posts/user_pay_load.dart';
 
 @immutable
-class UserInfoStorage {
-  const UserInfoStorage();
+class SaveUserInfo {
+  const SaveUserInfo();
 
   Future<bool> saveUserInfo({
     required UserId userId,
     required String displayName,
-    required String email,
+    required String? email,
   }) async {
     try {
       final userInfo = await FirebaseFirestore.instance
           .collection(CollectionNames.users)
-          .where(
-            FirebaseFieldNames.userId,
-            isEqualTo: userId,
-          )
+          .where(FirebaseFieldNames.userId, isEqualTo: userId)
           .limit(1)
           .get();
 
       if (userInfo.docs.isNotEmpty) {
-        await userInfo.docs.first.reference.update({
+        userInfo.docs.first.reference.update({
           FirebaseFieldNames.displayName: displayName,
-          FirebaseFieldNames.email: email,
+          FirebaseFieldNames.email: email ?? '',
         });
+
         return true;
       }
 
-      final payLoad = UserInfoPayLoad(
+      final userPayLoad = UserInfoPayLoad(
         userId: userId,
         displayName: displayName,
         email: email,
       );
+
       await FirebaseFirestore.instance.collection(CollectionNames.users).add(
-            payLoad,
+            userPayLoad,
           );
     } catch (e) {
       return false;
