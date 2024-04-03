@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:instantgram/Providers/Provids/is_logged_in_pro.dart';
+import 'package:instantgram/Screens/Auth/sign_up.dart';
+import 'package:instantgram/Screens/Main/main.dart';
 import 'package:instantgram/firebase_options.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_core/firebase_core.dart';
@@ -22,19 +26,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyWidget(),
-    );
-  }
-}
-
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('App Bar'),
+      home: Consumer(
+        builder: (context, ref, child) {
+          final isLoaggedIn = ref.watch(isLoggedInProvider);
+          if (isLoaggedIn) {
+            return const MainScreen();
+          } else {
+            return const LoginScreen();
+          }
+        },
       ),
     );
   }
