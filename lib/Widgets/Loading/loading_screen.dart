@@ -35,6 +35,7 @@ class LoadingScreen {
     textController.add(text);
 
     final renderBox = context.findRenderObject() as RenderBox;
+    // ignore: unused_local_variable
     final size = renderBox.size;
   }
 }
