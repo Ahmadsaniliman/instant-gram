@@ -8,7 +8,7 @@ class BaseText {
 
   const BaseText({
     required this.text,
-    required this.style,
+    this.style,
   });
 
   factory BaseText.plain({
@@ -22,11 +22,8 @@ class BaseText {
 
   factory BaseText.link({
     required String text,
-    TextStyle? style = const TextStyle(
-      color: Colors.blue,
-      decoration: TextDecoration.underline,
-    ),
     required VoidCallback onTapped,
+    TextStyle? style = const TextStyle(),
   }) =>
       LinkText(
         text: text,

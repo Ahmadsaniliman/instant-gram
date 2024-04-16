@@ -12,7 +12,9 @@ class GoogleButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FaIcon(FontAwesomeIcons.google),
+          FaIcon(
+            FontAwesomeIcons.google,
+          ),
           SizedBox(height: 10),
           Text(Strings.google),
         ],

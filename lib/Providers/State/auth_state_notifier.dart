@@ -17,38 +17,39 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
         userId: _authenticator.userId,
       );
     }
+  }
 
-    Future<void> logOut() async {
-      state = state.cpoiedWith(true);
-      _authenticator.logOut();
-      state = const AuthState.unKnown();
-    }
+  Future<void> logOut() async {
+    state = state.cpoiedWith(true);
+    _authenticator.logOut();
+    state = const AuthState.unKnown();
+  }
 
-    Future<void> saveUserInfo({required UserId userId}) =>
-        _saveUserInfo.saveUserInfo(
-          userId: userId,
-          displayName: _authenticator.displayName,
-          email: _authenticator.email,
-        );
-    Future<void> logInWithgoogle() async {
-      state = state.cpoiedWith(true);
-      final result = await _authenticator.logInWithGoogle();
-      final userId = _authenticator.userId;
+  Future<void> saveUserInfo({required UserId userId}) =>
+      _saveUserInfo.saveUserInfo(
+        userId: userId,
+        displayName: _authenticator.displayName,
+        email: _authenticator.email,
+      );
 
-      if (result == AuthResults.success && userId != null) {
-        saveUserInfo(userId: userId);
-        state = AuthState(
-          result: result,
-          isLoading: false,
-          userId: userId,
-        );
-      }
+  Future<void> logInWithgoogle() async {
+    state = state.cpoiedWith(true);
+    final result = await _authenticator.logInWithGoogle();
+    final userId = _authenticator.userId;
 
+    if (result == AuthResults.success && userId != null) {
+      saveUserInfo(userId: userId);
       state = AuthState(
         result: result,
         isLoading: false,
-        userId: _authenticator.userId,
+        userId: userId,
       );
     }
+
+    state = AuthState(
+      result: result,
+      isLoading: false,
+      userId: _authenticator.userId,
+    );
   }
 }
