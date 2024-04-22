@@ -14,7 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -28,25 +28,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Consumer(
-        builder: (context, ref, child) {
-          ref.listen(isLoadingProvider, (previous, isLoading) {
-            if (isLoading) {
-              LoadingScreen.instance().show(
-                context: context,
-              );
-            } else {
-              LoadingScreen.instance().hide();
-            }
-          });
-          final isLoaggedIn = ref.watch(isLoggedInProvider);
-          if (isLoaggedIn) {
-            return const MainScreen();
-          } else {
-            return const LoginScreen();
-          }
-        },
-      ),
+      home: const MyWidget(),
     );
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

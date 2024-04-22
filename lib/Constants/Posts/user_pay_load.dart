@@ -1,18 +1,18 @@
 import 'dart:collection';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:instantgram/Constants/Posts/fibase_fields.dart';
 import 'package:instantgram/Constants/Posts/user_id.dart';
 
 @immutable
-class UserInfoPayLoad extends MapView<String, String> {
-  UserInfoPayLoad({
-required UserId userId,
-required String? displayName,
-required String? email,
+class UserPayLoad extends MapView<String, dynamic> {
+  UserPayLoad({
+    required UserId? userId,
+    required String? email,
+    required String? displayName,
   }) : super({
-    FirebaseFieldNames.userId : userId,
-    FirebaseFieldNames.displayName : displayName ?? '',
-    FirebaseFieldNames.email : email ?? '',
-  });
+          FirebaseFieldNames.userId: userId,
+          FirebaseFieldNames.displayName: displayName ?? '',
+          FirebaseFieldNames.email: email ?? '',
+        });
 }

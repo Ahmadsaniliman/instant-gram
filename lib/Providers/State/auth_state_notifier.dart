@@ -6,50 +6,48 @@ import 'package:instantgram/Providers/auth_provider.dart';
 import 'package:instantgram/Storage/user_info_storage.dart';
 
 class AuthStateNotifier extends StateNotifier<AuthState> {
-  final _authenticator = const Authenticator();
-  final _saveUserInfo = const SaveUserInfo();
+  final authenticator = const Auhtenticator();
+  final userInfo = const UserInfoStorage();
 
-  AuthStateNotifier() : super(const AuthState.unKnown()) {
-    if (_authenticator.isAlreadyLoggedIn) {
-      state = AuthState(
-        result: AuthResults.success,
+  AuthStateNotifier()
+      : super(
+          const AuthState.unKnown(),
+        ) {
+    if (authenticator.isAlreadyLoggedIn) {
+      AuthState(
         isLoading: false,
-        userId: _authenticator.userId,
-      );
-    }
-  }
-
-  Future<void> logOut() async {
-    state = state.cpoiedWith(true);
-    _authenticator.logOut();
-    state = const AuthState.unKnown();
-  }
-
-  Future<void> saveUserInfo({required UserId userId}) =>
-      _saveUserInfo.saveUserInfo(
-        userId: userId,
-        displayName: _authenticator.displayName,
-        email: _authenticator.email,
-      );
-
-  Future<void> logInWithgoogle() async {
-    state = state.cpoiedWith(true);
-    final result = await _authenticator.logInWithGoogle();
-    final userId = _authenticator.userId;
-
-    if (result == AuthResults.success && userId != null) {
-      saveUserInfo(userId: userId);
-      state = AuthState(
-        result: result,
-        isLoading: false,
-        userId: userId,
+        userId: authenticator.userId,
+        results: AuthResults.success,
       );
     }
 
-    state = AuthState(
-      result: result,
-      isLoading: false,
-      userId: _authenticator.userId,
-    );
+    Future<void> logOut() async {
+      state = state.copiedWith(true);
+      await authenticator.logOut();
+      state = const AuthState.unKnown();
+    }
+
+    Future<void> saveUserInfo({required UserId userId}) =>
+        userInfo.saveUserInfo(
+          userId: userId,
+          displayName: authenticator.displaName,
+          email: authenticator.email!,
+        );
+    Future<void> logInWithGoogle() async {
+      state = state.copiedWith(true);
+      final userId = authenticator.userId;
+      final result = await authenticator.logInWithGoogle();
+      if (result == AuthResults.success && userId != null) {
+        await saveUserInfo(
+          userId: userId,
+        );
+
+        state = AuthState(
+          isLoading: false,
+          userId: userId,
+          results: result,
+        );
+      }
+    }
   }
 }
