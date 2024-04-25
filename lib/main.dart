@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instantgram/Providers/Provids/is_loading_pro.dart';
-import 'package:instantgram/Providers/Provids/is_logged_in_pro.dart';
 import 'package:instantgram/Screens/Auth/sign_up.dart';
 import 'package:instantgram/Screens/Main/main.dart';
 import 'package:instantgram/Widgets/Loading/loading_screen.dart';
@@ -14,7 +13,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,22 +25,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Instant-g',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ProviderScope(
+      child: MaterialApp(
+        title: 'Instant-g',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: Consumer(
+          builder: (BuildContext context, WidgetRef ref, Widget? child) {
+            ref.listen(isLoadingProvider, (_, isLoading) {
+              if (isLoading) {
+                LoadingScreen.instance().show(
+                  context: context,
+                );
+              } else {
+                LoadingScreen.instance().hide();
+              }
+            });
+            final isLoaggedIn = ref.watch(isLoadingProvider);
+            if (isLoaggedIn) {
+              return const MainScreen();
+            } else {
+              return const SignInScreen();
+            }
+          },
+          child: const SignInScreen(),
+        ),
       ),
-      home: const MyWidget(),
     );
-  }
-}
-
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

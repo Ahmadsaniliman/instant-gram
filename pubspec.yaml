@@ -77,6 +77,12 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/animations/animation_one.json
+    - assets/animations/animation_two.json
+    - assets/animations/animation_three.json
+    - assets/animations/animation_four.json
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

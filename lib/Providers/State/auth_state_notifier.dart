@@ -20,34 +20,33 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
         results: AuthResults.success,
       );
     }
+  }
 
-    Future<void> logOut() async {
-      state = state.copiedWith(true);
-      await authenticator.logOut();
-      state = const AuthState.unKnown();
-    }
+  Future<void> logOut() async {
+    state = state.copiedWith(true);
+    await authenticator.logOut();
+    state = const AuthState.unKnown();
+  }
 
-    Future<void> saveUserInfo({required UserId userId}) =>
-        userInfo.saveUserInfo(
-          userId: userId,
-          displayName: authenticator.displaName,
-          email: authenticator.email!,
-        );
-    Future<void> logInWithGoogle() async {
-      state = state.copiedWith(true);
-      final userId = authenticator.userId;
-      final result = await authenticator.logInWithGoogle();
-      if (result == AuthResults.success && userId != null) {
-        await saveUserInfo(
-          userId: userId,
-        );
+  Future<void> saveUserInfo({required UserId userId}) => userInfo.saveUserInfo(
+        userId: userId,
+        displayName: authenticator.displaName,
+        email: authenticator.email!,
+      );
+  Future<void> logInWithGoogle() async {
+    state = state.copiedWith(true);
+    final userId = authenticator.userId;
+    final result = await authenticator.logInWithGoogle();
+    if (result == AuthResults.success && userId != null) {
+      await saveUserInfo(
+        userId: userId,
+      );
 
-        state = AuthState(
-          isLoading: false,
-          userId: userId,
-          results: result,
-        );
-      }
+      state = AuthState(
+        isLoading: false,
+        userId: userId,
+        results: result,
+      );
     }
   }
 }
