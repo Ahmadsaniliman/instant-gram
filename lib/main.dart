@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             });
             final isLoaggedIn = ref.watch(isLoadingProvider);
             if (isLoaggedIn) {
-              return const MainScreen();
+              return const MainView();
             } else {
               return const SignInScreen();
             }
