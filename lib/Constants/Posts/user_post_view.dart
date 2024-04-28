@@ -11,11 +11,11 @@ class UserPostView extends ConsumerWidget {
   const UserPostView({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final posts = ref.watch(userPostProvider);
+    final posts = ref.watch(userPostsProvider);
     return RefreshIndicator(
       onRefresh: () {
         // ignore: unused_result
-        ref.refresh(userPostProvider);
+        ref.refresh(userPostsProvider);
         return Future.delayed(
           const Duration(seconds: 1),
         );

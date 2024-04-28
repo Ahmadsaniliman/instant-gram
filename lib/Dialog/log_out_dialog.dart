@@ -1,16 +1,14 @@
-import 'package:flutter/foundation.dart' show immutable;
 import 'package:instantgram/Dialog/general_dialog.dart';
 import 'package:instantgram/Widgets/Strings/strings.dart';
 
-@immutable
-class LogOutDialog extends AlertDialogModel<bool> {
+class LogOutDialog extends ALertDialogModel {
   LogOutDialog()
       : super(
           title: Strings.logOut,
           message: Strings.areYouSureYouWantToLogOutOfTheApplogOut,
           buttons: {
-            Strings.logOut: true,
             Strings.cancel: false,
+            Strings.logOut: true,
           },
         );
 }
