@@ -5,7 +5,7 @@ import 'package:instantgram/Constants/Posts/fibase_fields.dart';
 import 'package:instantgram/Constants/Posts/post.dart';
 import 'package:instantgram/Providers/Provids/user_id_provider.dart';
 
-final userPostsProvider = StreamProvider.autoDispose<Iterable<Post>>(
+final userPostProvider = StreamProvider<Iterable<Post>>(
   (ref) {
     final controller = StreamController<Iterable<Post>>();
     final userId = ref.watch(userIdProvider);
@@ -32,7 +32,7 @@ final userPostsProvider = StreamProvider.autoDispose<Iterable<Post>>(
         final document = snapshot.docs;
         final posts = document
             .where(
-              (doc) => !doc.metadata.hasPendingWrites,
+              (doc) => doc.metadata.hasPendingWrites,
             )
             .map(
               (doc) => Post(
@@ -41,7 +41,9 @@ final userPostsProvider = StreamProvider.autoDispose<Iterable<Post>>(
               ),
             );
 
-        controller.sink.add(posts);
+        controller.add(
+          posts,
+        );
       },
     );
 

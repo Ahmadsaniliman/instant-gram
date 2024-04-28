@@ -7,23 +7,22 @@ import 'package:instantgram/LottieAnimations/oading_anim_view.dart';
 import 'package:instantgram/Providers/Provids/user_posts_provider.dart';
 import 'package:instantgram/Widgets/Strings/strings.dart';
 
-class UserPostsVie extends ConsumerWidget {
-  const UserPostsVie({super.key});
+class UserPostView extends ConsumerWidget {
+  const UserPostView({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final posts = ref.watch(userPostsProvider);
+    final posts = ref.watch(userPostProvider);
     return RefreshIndicator(
       onRefresh: () {
         // ignore: unused_result
-        ref.refresh(userPostsProvider);
+        ref.refresh(userPostProvider);
         return Future.delayed(
           const Duration(seconds: 1),
         );
       },
       child: posts.when(data: (data) {
         if (data.isEmpty) {
-          return EmptyContentAnimationView(
-            key: key,
+          return const EmptyContentAnimationView(
             text: Strings.youHaveNoPosts,
           );
         } else {
@@ -32,13 +31,9 @@ class UserPostsVie extends ConsumerWidget {
           );
         }
       }, error: (_, __) {
-        return ErrorAnimationView(
-          key: key,
-        );
+        return ErrorAnimationView(key: key);
       }, loading: () {
-        return LoadingAnimationView(
-          key: key,
-        );
+        return LoadingAnimationView(key: key);
       }),
     );
   }
