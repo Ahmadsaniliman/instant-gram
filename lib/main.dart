@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instantgram/Providers/Provids/is_loading_pro.dart';
+import 'package:instantgram/Providers/Provids/is_logged_in_pro.dart';
 import 'package:instantgram/Screens/Auth/sign_up.dart';
 import 'package:instantgram/Screens/Main/main.dart';
 import 'package:instantgram/Widgets/Loading/loading_screen.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
                 LoadingScreen.instance().hide();
               }
             });
-            final isLoaggedIn = ref.watch(isLoadingProvider);
+            final isLoaggedIn = ref.watch(isLoggedInProvider);
             if (isLoaggedIn) {
               return const MainView();
             } else {
