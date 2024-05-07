@@ -6,8 +6,8 @@ import 'package:instantgram/LottieAnimations/oading_anim_view.dart';
 import 'package:instantgram/LottieAnimations/small_err_anim_view.dart';
 
 class FileThumbnailView extends ConsumerWidget {
-  const FileThumbnailView(
-    this.thumbnailRequest, {
+  const FileThumbnailView({
+    required this.thumbnailRequest,
     super.key,
   });
   final ThumbnailRequest thumbnailRequest;
@@ -16,19 +16,15 @@ class FileThumbnailView extends ConsumerWidget {
     final thumbnail = ref.watch(
       thumbnailProvider(thumbnailRequest),
     );
-    return thumbnail.when(
-      data: (data) {
-        return AspectRatio(
-          aspectRatio: data.aspectRatio,
-          child: data.image,
-        );
-      },
-      error: (Object error, StackTrace stackTrace) {
-        return SmallErrorAnimationView(key: key);
-      },
-      loading: () {
-        return LoadingAnimationView(key: key);
-      },
-    );
+    return thumbnail.when(data: (data) {
+      return AspectRatio(
+        aspectRatio: data.aspectRatio,
+        child: data.image,
+      );
+    }, error: (error, stackTrace) {
+      return SmallErrorAnimationView(key: key);
+    }, loading: () {
+      return LoadingAnimationView(key: key);
+    });
   }
 }

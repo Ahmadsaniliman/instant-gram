@@ -19,31 +19,27 @@ final thumbnailProvider =
       case FileType.video:
         final thumb = await VideoThumbnail.thumbnailData(
           video: request.file.path,
-          quality: 75,
           imageFormat: ImageFormat.JPEG,
+          quality: 75,
         );
-
         if (thumb == null) {
           throw const CouldNotBuildThumbnailException();
         }
 
         image = Image.memory(
           thumb,
-          fit: BoxFit.fitHeight,
+          fit: BoxFit.cover,
         );
         break;
       case FileType.image:
         image = Image.file(
           request.file,
-          fit: BoxFit.fitHeight,
+          fit: BoxFit.cover,
         );
         break;
     }
 
-    final aspectRatio = await image.getImageAspectRaio();
-    return ImageWithAspectRatio(
-      image: image,
-      aspectRatio: aspectRatio,
-    );
+    final aspectRatio = image.getAspectratio();
+    return  ImageWithAspectRatio(aspectRatio: aspectRatio, image: image);
   },
 );
