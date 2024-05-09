@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instantgram/Constants/ImageUpLoad/exception.dart';
 import 'package:instantgram/Constants/ImageUpLoad/get_aspect_ratio_exten.dart';
@@ -8,38 +8,42 @@ import 'package:instantgram/Constants/Posts/file_type.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 final thumbnailProvider =
-    FutureProvider.family.autoDispose<ImageWithAspectRatio, ThumbnailRequest>(
+    FutureProvider.family.autoDispose<ImageWIthAspectRatio, ThumbnailRequest>(
   (
     ref,
-    ThumbnailRequest request,
+    ThumbnailRequest rquest,
   ) async {
     final Image image;
 
-    switch (request.fileType) {
+    switch (rquest.fileType) {
       case FileType.video:
         final thumb = await VideoThumbnail.thumbnailData(
-          video: request.file.path,
+          video: rquest.file.path,
           imageFormat: ImageFormat.JPEG,
           quality: 75,
         );
+
         if (thumb == null) {
           throw const CouldNotBuildThumbnailException();
         }
-
         image = Image.memory(
           thumb,
           fit: BoxFit.cover,
         );
         break;
+
       case FileType.image:
         image = Image.file(
-          request.file,
+          rquest.file,
           fit: BoxFit.cover,
         );
         break;
     }
 
-    final aspectRatio = image.getAspectratio();
-    return  ImageWithAspectRatio(aspectRatio: aspectRatio, image: image);
+    final aspectRatio = image.getImageAspectRation();
+    return ImageWIthAspectRatio(
+      image: image,
+      aspectRatio: aspectRatio,
+    );
   },
 );
