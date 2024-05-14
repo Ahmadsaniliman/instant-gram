@@ -1,12 +1,12 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 @immutable
-class ImageWIthAspectRatio {
+class ImageWithAspectRation {
   final Image image;
-  final dynamic aspectRatio;
+  final dynamic ratio;
 
-  const ImageWIthAspectRatio({
+  const ImageWithAspectRation({
     required this.image,
-    required this.aspectRatio,
+    required this.ratio,
   });
 }
