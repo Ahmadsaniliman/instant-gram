@@ -14,5 +14,7 @@ extension GetImageAspectRation on material.Image {
         },
       ),
     );
+
+    return completer.future;
   }
 }
