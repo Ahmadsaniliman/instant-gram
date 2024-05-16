@@ -12,20 +12,13 @@ class PostSettingNotifier extends StateNotifier<Map<PostSettings, bool>> {
             },
           ),
         );
-
-  void setSetting(
-    bool value,
-    PostSettings setting,
-  ) {
-    final exsitingValue = state[setting];
-    if (exsitingValue == null || exsitingValue == value) {
+  void setting(PostSettings setting, bool value) {
+    final existingValue = state[setting];
+    if (existingValue == null || existingValue == value) {
       return;
     }
-
     state = Map.unmodifiable(
-      Map.from(
-        state..[setting] = value,
-      ),
+      Map.from(state)..[setting] = value,
     );
   }
 }
