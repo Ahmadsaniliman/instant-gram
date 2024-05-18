@@ -9,7 +9,6 @@ import 'package:instantgram/firebase_options.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_core/firebase_core.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -58,5 +57,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
