@@ -27,7 +27,9 @@ class ImageUpLoadNotifier extends StateNotifier<bool> {
     required FileType fileType,
     required Map<PostSettings, bool> postSettings,
   }) async {
-    late Uint8List thumbnailUint8List;
+    isLoading = true;
+
+    late Uint8List thumbnailUint8list;
 
     switch (fileType) {
       case FileType.video:
@@ -38,69 +40,64 @@ class ImageUpLoadNotifier extends StateNotifier<bool> {
           maxHeight: 250,
         );
 
-        thumbnailUint8List = thumb as Uint8List;
-
+        thumbnailUint8list = thumb as Uint8List;
       case FileType.image:
         final fileAsImage = img.decodeImage(file.readAsBytesSync());
         if (fileAsImage == null) {
           return false;
         }
 
-        final thumbnail = img.copyResize(
-          fileAsImage,
-          width: 200,
-        );
-
+        final thumbnail = img.copyResize(fileAsImage, width: 200);
         final thumbnailData = img.encodeJpg(thumbnail);
-        thumbnailUint8List = Uint8List.fromList(thumbnailData);
+
+        thumbnailUint8list = Uint8List.fromList(thumbnailData);
     }
 
+    final aspectRatio = thumbnailUint8list.getImageDataAspectRatio();
     final fileName = const Uuid().v4();
-    final thumbnailAspectRatio =
-        await thumbnailUint8List.getImageDataAspectRatio();
-
-    final thumbnailRef = FirebaseStorage.instance
-        .ref()
-        .child(userId)
-        .child(CollectionNames.thambnails)
-        .child(fileName);
-
-    final originalFileRef = FirebaseStorage.instance
-        .ref()
-        .child(userId)
-        .child(fileType.collectionName)
-        .child(fileName);
 
     try {
+      final thumbnailRef = FirebaseStorage.instance
+          .ref()
+          .child(userId)
+          .child(CollectionNames.thambnails)
+          .child(fileName);
+
+      final originalStorageId = FirebaseStorage.instance
+          .ref()
+          .child(userId)
+          .child(fileType.collectionName)
+          .child(fileName);
+
       final thumbnailUpLoadTask =
-          await thumbnailRef.putData(thumbnailUint8List);
+          await thumbnailRef.putData(thumbnailUint8list);
       final thumbnailStorageId = thumbnailUpLoadTask.ref.name;
 
-      final originalFileUpLoad = await originalFileRef.putFile(file);
-      final originalStorageId = originalFileUpLoad.ref.name;
+      final originalFileUpLoad =
+          await originalStorageId.putData(thumbnailUint8list);
+      final originalFileStorageId = originalFileUpLoad.ref.name;
 
       final postPayLoad = PostPayLoad(
         userId: userId,
         message: message,
         thumbnailUrl: await thumbnailRef.getDownloadURL(),
-        fileUrl: await originalFileRef.getDownloadURL(),
+        fileUrl: await originalStorageId.getDownloadURL(),
         fileType: fileType,
         fileName: fileName,
-        aspectRatio: thumbnailAspectRatio,
+        aspectRatio: aspectRatio,
         thumbnailStorageId: thumbnailStorageId,
-        originalFileStorageId: originalStorageId,
+        originalFileStorageId: originalFileStorageId,
         postSettings: postSettings,
       );
 
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection(CollectionNames.posts)
           .add(postPayLoad);
-    } catch (_) {
+    } catch (e) {
       return false;
     } finally {
       isLoading = false;
     }
-
     return true;
   }
 }

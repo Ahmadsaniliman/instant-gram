@@ -14,7 +14,7 @@ class PostPayLoad extends MapView<String, dynamic> {
     required String fileUrl,
     required FileType fileType,
     required String fileName,
-    required double aspectRatio,
+    required dynamic aspectRatio,
     required String thumbnailStorageId,
     required String originalFileStorageId,
     required Map<PostSettings, bool> postSettings,
