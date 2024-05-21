@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:instantgram/Constants/ImageUpLoad/image_picker_helper.dart';
+import 'package:instantgram/Constants/Posts/create_post.dart';
+import 'package:instantgram/Constants/Posts/file_type.dart';
+import 'package:instantgram/Constants/Posts/post_setting_provider.dart';
 import 'package:instantgram/Constants/Posts/user_post_view.dart';
 import 'package:instantgram/Dialog/general_dialog.dart';
 import 'package:instantgram/Dialog/log_out_dialog.dart';
@@ -25,7 +29,30 @@ class _MainViewState extends ConsumerState<MainView> {
           ),
           actions: [
             IconButton(
-              onPressed: () async {},
+              onPressed: () async {
+                final videoFile =
+                    await ImagePickerHelper.pickImageFromGallery();
+                if (videoFile == null) {
+                  return;
+                }
+                // ignore: unused_result
+                ref.refresh(postSettingsProvider);
+
+                if (mounted) {
+                  return;
+                }
+
+                Navigator.push(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CreateNewPost(
+                      file: videoFile,
+                      fileType: FileType.video,
+                    ),
+                  ),
+                );
+              },
               icon: const FaIcon(
                 FontAwesomeIcons.film,
               ),

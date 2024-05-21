@@ -23,6 +23,3 @@ class PostSettingNotifier extends StateNotifier<Map<PostSettings, bool>> {
   }
 }
 
-final postSettingsProvider = StateNotifierProvider<PostSettingNotifier, PostSettings>(
-  (ref) => PostSettingNotifier(),
-);

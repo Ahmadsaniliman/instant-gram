@@ -7,7 +7,10 @@ import 'package:instantgram/LottieAnimations/oading_anim_view.dart';
 
 class FileThumbnailView extends ConsumerWidget {
   final ThumbnailRequest thumbnailRequest;
-  const FileThumbnailView(this.thumbnailRequest, {super.key});
+  const FileThumbnailView({
+    super.key,
+    required this.thumbnailRequest,
+  });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final thumbnail = ref.watch(
