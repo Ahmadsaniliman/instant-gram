@@ -17,19 +17,20 @@ final userModelProvider = StreamProvider.family.autoDispose<UserModel, UserId>(
         .limit(1)
         .snapshots()
         .listen(
-      (event) {
-        final doc = event.docs.first;
+      (snapshot) {
+        final doc = snapshot.docs.first;
         final json = doc.data();
-        final userModel = UserModel.fromJson(json, userId: userId);
-
-        controller.sink.add(userModel);
+        final userModel = UserModel.fromJson(json, userId);
+        controller.add(userModel);
       },
     );
 
-    ref.onDispose(() {
-      sub.cancel();
-      controller.close();
-    });
+    ref.onDispose(
+      () {
+        sub.cancel();
+        controller.close();
+      },
+    );
 
     return controller.stream;
   },

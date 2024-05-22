@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,19 +33,18 @@ class _MainViewState extends ConsumerState<MainView> {
             IconButton(
               onPressed: () async {
                 final videoFile =
-                    await ImagePickerHelper.pickImageFromGallery();
+                    await ImagePickerHelper.pickVideoFromGallery();
                 if (videoFile == null) {
                   return;
                 }
-                // ignore: unused_result
+
                 ref.refresh(postSettingsProvider);
 
-                if (mounted) {
+                if (!mounted) {
                   return;
                 }
 
                 Navigator.push(
-                  // ignore: use_build_context_synchronously
                   context,
                   MaterialPageRoute(
                     builder: (_) => CreateNewPost(
@@ -58,7 +59,29 @@ class _MainViewState extends ConsumerState<MainView> {
               ),
             ),
             IconButton(
-              onPressed: () async {},
+              onPressed: () async {
+                final imageFile =
+                    await ImagePickerHelper.pickImageFromGallery();
+                if (imageFile == null) {
+                  return;
+                }
+
+                ref.refresh(postSettingsProvider);
+
+                if (!mounted) {
+                  return;
+                }
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CreateNewPost(
+                      file: imageFile,
+                      fileType: FileType.video,
+                    ),
+                  ),
+                );
+              },
               icon: const Icon(
                 Icons.add_photo_alternate_outlined,
               ),

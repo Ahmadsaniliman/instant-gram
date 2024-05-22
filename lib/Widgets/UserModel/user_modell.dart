@@ -1,29 +1,25 @@
 import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:instantgram/Constants/Posts/fibase_fields.dart';
 import 'package:instantgram/Constants/Posts/user_id.dart';
 
 @immutable
 class UserModel extends MapView<String, dynamic> {
+  final UserId userId;
+
+  final String displayName;
+  final String? email;
   UserModel({
-    required UserId userId,
-    required String? email,
-    required String displayName,
+    required this.userId,
+    required this.displayName,
+    required this.email,
   }) : super(
           {
             FirebaseFieldNames.userId: userId,
             FirebaseFieldNames.displayName: displayName,
             FirebaseFieldNames.email: email,
           },
-        );
-
-  UserModel.fromJson(
-    Map<String, dynamic> json, {
-    required UserId userId,
-  }) : this(
-          userId: userId,
-          displayName: json[FirebaseFieldNames.displayName] as String,
-          email: json[FirebaseFieldNames.email],
         );
 
   @override
@@ -39,9 +35,15 @@ class UserModel extends MapView<String, dynamic> {
   int get hashCode => Object.hashAll(
         [
           runtimeType,
-          userId,
-          email,
-          displayName,
         ],
       );
+
+  UserModel.fromJson(
+    Map<String, dynamic> json,
+    UserId userId,
+  ) : this(
+          userId: userId,
+          displayName: json[FirebaseFieldNames.displayName] as String,
+          email: json[FirebaseFieldNames.email],
+        );
 }
