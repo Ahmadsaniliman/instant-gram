@@ -1,15 +1,12 @@
 import 'dart:collection';
-
-import 'package:flutter/material.dart';
 import 'package:instantgram/Constants/Posts/fibase_fields.dart';
 import 'package:instantgram/Constants/Posts/user_id.dart';
 
-@immutable
 class UserModel extends MapView<String, dynamic> {
   final UserId userId;
-
   final String displayName;
   final String? email;
+
   UserModel({
     required this.userId,
     required this.displayName,
@@ -22,23 +19,7 @@ class UserModel extends MapView<String, dynamic> {
           },
         );
 
-  @override
-  bool operator ==(Object other) =>
-      identical(other, this) ||
-      other is UserModel &&
-          runtimeType == other.runtimeType &&
-          userId == other.userId &&
-          displayName == other.displayName &&
-          email == other.email;
-
-  @override
-  int get hashCode => Object.hashAll(
-        [
-          runtimeType,
-        ],
-      );
-
-  UserModel.fromJson(
+  UserModel.from(
     Map<String, dynamic> json,
     UserId userId,
   ) : this(

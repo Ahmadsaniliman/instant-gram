@@ -13,25 +13,24 @@ final userModelProvider = StreamProvider.family.autoDispose<UserModel, UserId>(
 
     final sub = FirebaseFirestore.instance
         .collection(CollectionNames.users)
-        .where(FirebaseFieldNames.users, isEqualTo: userId)
+        .where(FirebaseFieldNames.userId, isEqualTo: userId)
         .limit(1)
         .snapshots()
         .listen(
       (snapshot) {
         final doc = snapshot.docs.first;
         final json = doc.data();
-        final userModel = UserModel.fromJson(json, userId);
-        controller.add(userModel);
+        final userModel = UserModel.from(json, userId);
+        controller.sink.add(userModel);
       },
     );
 
     ref.onDispose(
       () {
-        sub.cancel();
         controller.close();
+        sub.cancel();
       },
     );
-
     return controller.stream;
   },
 );
