@@ -4,7 +4,6 @@ import 'package:instantgram/LottieAnimations/error_anim_view.dart';
 import 'package:instantgram/LottieAnimations/oading_anim_view.dart';
 import 'package:instantgram/Providers/Provids/user_id_provider.dart';
 import 'package:instantgram/Widgets/Comment/comment.dart';
-import 'package:instantgram/Widgets/Comment/delete_comment_provider.dart';
 import 'package:instantgram/Widgets/UserModel/user_model_provider.dart';
 
 class CommentTile extends ConsumerWidget {
@@ -18,28 +17,28 @@ class CommentTile extends ConsumerWidget {
     final userInfo = ref.watch(
       userModelProvider(comment.userId),
     );
-    return userInfo.when(data: (data) {
-      final currentUserId = ref.read(userIdProvider);
-      return ListTile(
-        trailing: currentUserId == comment.userId
-            ? IconButton(
-                onPressed: () async {
-                  ref.read(deleeteCommentProvider.notifier).deleteComment(
-                        commentId: comment.commentId,
-                      );
-                },
-                icon: const Icon(Icons.delete),
-              )
-            : null,
-        title: Text(data.displayName),
-        subtitle: Text(
-          comment.comment,
-        ),
-      );
-    }, error: (_, __) {
-      return ErrorAnimationView(key: key);
-    }, loading: () {
-      return LoadingAnimationView(key: key);
-    });
+    return userInfo.when(
+      data: (data) {
+        final currUser = ref.read(userIdProvider);
+        return ListTile(
+          title: Text(data.displayName),
+          subtitle: Text(comment.message),
+          trailing: currUser == data.userId
+              ? IconButton(
+                  onPressed: () {
+                    // delete comment here
+                  },
+                  icon: const Icon(Icons.delete),
+                )
+              : null,
+        );
+      },
+      error: (_, __) {
+        return ErrorAnimationView(key: key);
+      },
+      loading: () {
+        return LoadingAnimationView(key: key);
+      },
+    );
   }
 }

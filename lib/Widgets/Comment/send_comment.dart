@@ -16,8 +16,6 @@ class SendCommentNotifier extends StateNotifier<bool> {
     required String comment,
   }) async {
     try {
-      isLoading = true;
-
       final commentPayLoad = CommentPayLoad(
         userId: userId,
         comment: comment,
@@ -27,6 +25,7 @@ class SendCommentNotifier extends StateNotifier<bool> {
       await FirebaseFirestore.instance
           .collection(CollectionNames.comments)
           .add(commentPayLoad);
+
       return true;
     } catch (e) {
       return false;
