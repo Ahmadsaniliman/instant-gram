@@ -10,7 +10,7 @@ class PostDateAndTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formatter = DateFormat('d mm, yyyy, h:mm, a');
+    final formatter = DateFormat('d mm, yyyy, d:mm, a');
     return Text(
       formatter.format(dateTime),
     );

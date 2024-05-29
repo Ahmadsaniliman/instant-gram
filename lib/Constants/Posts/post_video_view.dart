@@ -20,7 +20,6 @@ class PostVideoView extends HookWidget {
     );
 
     final isVideoPlayed = useState(false);
-
     useEffect(
       () {
         controller.initialize().then(

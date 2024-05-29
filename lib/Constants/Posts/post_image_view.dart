@@ -15,9 +15,8 @@ class PostImageView extends StatelessWidget {
       child: Image.network(
         post.fileUrl,
         loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          }
+          if (loadingProgress == null) return child;
+
           return const Center(
             child: CircularProgressIndicator(),
           );

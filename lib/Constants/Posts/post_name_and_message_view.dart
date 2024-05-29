@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instantgram/Constants/Posts/post.dart';
 import 'package:instantgram/Constants/Posts/rich_text.dart';
 import 'package:instantgram/LottieAnimations/error_anim_view.dart';
