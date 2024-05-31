@@ -6,10 +6,7 @@ import 'package:instantgram/Constants/Posts/post_video_view.dart';
 
 class PostVideoOrImageView extends StatelessWidget {
   final Post post;
-  const PostVideoOrImageView({
-    super.key,
-    required this.post,
-  });
+  const PostVideoOrImageView({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,6 @@ import 'package:instantgram/Constants/Posts/post_id.dart';
 final likesProvider = StreamProvider.family.autoDispose<int, String>(
   (ref, PostId postId) {
     final controller = StreamController<int>.broadcast();
-
     controller.sink.add(0);
 
     final sub = FirebaseFirestore.instance
@@ -19,7 +18,9 @@ final likesProvider = StreamProvider.family.autoDispose<int, String>(
         .snapshots()
         .listen(
       (snapshot) {
-        controller.sink.add(snapshot.docs.length);
+        controller.sink.add(
+          snapshot.docs.length,
+        );
       },
     );
 
@@ -29,6 +30,7 @@ final likesProvider = StreamProvider.family.autoDispose<int, String>(
         controller.close();
       },
     );
+
     return controller.stream;
   },
 );

@@ -6,21 +6,19 @@ import 'package:instantgram/LottieAnimations/error_anim_view.dart';
 import 'package:instantgram/LottieAnimations/oading_anim_view.dart';
 
 class LikesCountView extends ConsumerWidget {
-  final PostId posId;
-  const LikesCountView({
-    super.key,
-    required this.posId,
-  });
+  final PostId postId;
+  const LikesCountView(this.postId, {super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final likesPro = ref.watch(
-      likesProvider(posId),
+      likesProvider(postId),
     );
     return likesPro.when(
       data: (data) {
-        final personOrPeople = data == 1 ? 'person' : 'people';
-        final likesCount = '$data $personOrPeople likesThis';
-        return Text(likesCount);
+        final personOrPeople = data == 1 ? 'person' : 'ppeople';
+
+        final likesText = '$data $personOrPeople like this post';
+        return Text(likesText);
       },
       error: (_, __) {
         return ErrorAnimationView(key: key);
