@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:instantgram/Widgets/Comment/comment.dart';
 import 'package:instantgram/Widgets/Comment/compact_comment.dart';
 
-class CompactCommentColumn extends StatelessWidget {
+class ColumnCompactComment extends StatelessWidget {
   final Iterable<Comment> comments;
-  const CompactCommentColumn({
+  const ColumnCompactComment({
     super.key,
     required this.comments,
   });
@@ -15,11 +15,14 @@ class CompactCommentColumn extends StatelessWidget {
       return const SizedBox.shrink();
     }
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: comments
           .map(
-            (comment) => CompactComment(comment: comment),
+            (
+              comment,
+            ) =>
+                CompactComment(
+              comment: comment,
+            ),
           )
           .toList(),
     );
