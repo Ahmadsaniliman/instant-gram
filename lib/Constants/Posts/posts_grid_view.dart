@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instantgram/Constants/Posts/ost_details_page.dart';
 import 'package:instantgram/Constants/Posts/post.dart';
 import 'package:instantgram/Constants/Posts/post_thumbnail_view.dart';
 
@@ -22,7 +23,13 @@ class PostsGridView extends StatelessWidget {
       itemBuilder: (context, index) {
         final post = posts.elementAt(index);
         return PostThumbnailView(
-          onTapp: () {},
+          onTapp: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => PostDetails(post: post),
+              ),
+            );
+          },
           post: post,
         );
       },
